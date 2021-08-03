@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="serviceProcessor" class="com.meituan.dorado.server.EchoImpl"></bean>
+
+    <bean id="serverPublisher" class="com.meituan.dorado.config.service.spring.ServiceBean" destroy-method="destroy">
+        <property name="appkey" value="com.meituan.octo.dorado.benchmark.server"/>
+        <property name="port" value="9003"/>
+        <!-- 可以换成你的注册方式, 此处mock 调用端对应直连-->
+        <property name="registry" value="mock"/>
+<!--        <property name="registry" value="mns"/>-->
+        <property name="serviceConfig" ref="serviceConfig"/>
+    </bean>
+
+    <bean id="serviceConfig" class="com.meituan.dorado.config.service.ServiceConfig">
+        <property name="serviceInterface" value="com.meituan.dorado.test.thrift.api.Echo"/>
+        <property name="serviceImpl" ref="serviceProcessor"/>
+    </bean>
+
+</beans>
